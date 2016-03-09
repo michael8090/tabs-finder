@@ -15,37 +15,59 @@ function get(url, onSuccess, onFail) {
     };
     xhr.send();
 }
-function renderResult(images, append) {
+function renderResult(items) {
     const resultPanel = document.querySelector('#result');
-    resultPanel.innerHTML = images.reduce((html, image) => html + `<a href="${image.image.contextLink}"><img src="${image.link}"></a>`, append ? resultPanel.innerHTML : '') || 'NOT FOUND';
+    resultPanel.innerHTML = items.reduce((html, image) => html + `<a href="${image.image.contextLink}"><img src="${image.link}"></a>`, '') || 'NOT FOUND';
 }
 
-function search(key, append) {
-    get(`/api/search?key=${encodeURIComponent(key)}`, (res) => renderResult(JSON.parse(res).items, append));
+let images = [];
+
+function search(key, append, done) {
+    const index = append ? images.length : 0;
+    get(`/api/search?key=${encodeURIComponent(key)}&index=${index}`, (res) => {
+        const newImages = JSON.parse(res).items;
+        if (!append) {
+            images = newImages;
+        } else {
+            images = images.concat(newImages);
+        }
+
+        renderResult(images);
+        done(newImages.length);
+    });
 }
 
 window.onload = () => {
     const input = document.querySelector('input');
+    let isLoadingMore = false;
+
+    function scrollHandler() {
+        if (isLoadingMore) {
+            return;
+        }
+
+        if (document.body.scrollHeight === document.body.scrollTop + window.innerHeight) {
+            const key = input.value;
+            if (key) {
+                isLoadingMore = true;
+                search(key, true, (newImageCount) => {
+                    if (!newImageCount) {
+                        document.onscroll = '';
+                    }
+                    isLoadingMore = false;
+                });
+
+            }
+        }
+    }
+
     document.querySelector('form').addEventListener('submit', (e) => {
         e.preventDefault();
         const key = input.value;
         if (key) {
             search(key);
+            document.onscroll = scrollHandler;
         }
     });
 
-    let isLoadingMore = false;
-    document.addEventListener('scroll', function scrollHandler() {
-        if (isLoadingMore) {
-            return;
-        }
-        isLoadingMore = true;
-
-        if (document.body.scrollHeight === document.body.scrollTop + window.innerHeight) {
-            const key = input.value;
-            if (key) {
-                search(key, true);
-            }
-        }
-    });
 };
