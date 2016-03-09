@@ -17,7 +17,7 @@ app.use(express.static(ROOT + '/client'));
 
 app.get('/api/search', (req, res) => {
     const key = req.query.key;
-    const index = req.query.index || 0;
+    const index = req.query.index || 1;
     const search = searchUrl.replace('{KEY}', encodeURIComponent(key)).replace('{INDEX}', index);
     console.log(search);
     request.getAsync(search)
