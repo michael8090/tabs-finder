@@ -9,7 +9,7 @@ const express = require('express'),
 const port = argv.port;
 const ROOT = __dirname;
 
-const searchUrl = 'https://www.googleapis.com/customsearch/v1?key=AIzaSyDheaXmeP-MaW5buX-nxSbsYunQ1U9D6mc&cx=001868711167737196319:ma5f00vvfku&searchType=image&q={KEY}&startIndex={INDEX}';
+const searchUrl = 'https://www.googleapis.com/customsearch/v1?key=AIzaSyDheaXmeP-MaW5buX-nxSbsYunQ1U9D6mc&cx=001868711167737196319:ma5f00vvfku&searchType=image&q={KEY}&start={INDEX}';
 
 const app = express();
 
