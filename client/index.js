@@ -17,7 +17,7 @@ function get(url, onSuccess, onFail) {
 }
 function renderResult(images) {
     const resultPanel = document.querySelector('#result');
-    resultPanel.innerHTML = images.reduce((html, image) => html + `<img src="${image.link}">`, '');
+    resultPanel.innerHTML = images.reduce((html, image) => html + `<img src="${image.link}">`, '') || 'NOT FOUND';
 }
 window.onload = () => {
     const input = document.querySelector('input');
