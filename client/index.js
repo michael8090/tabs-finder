@@ -24,7 +24,7 @@ let images = [];
 
 function search(key, append, done) {
     const index = append ? images.length : 0;
-    get(`/api/search?key=${encodeURIComponent(key)}&index=${index}`, (res) => {
+    get(`/api/search?key=${encodeURIComponent(key)}&index=${index + 1}`, (res) => {
         const newImages = JSON.parse(res).items;
         if (!append) {
             images = newImages;
