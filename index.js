@@ -20,7 +20,7 @@ app.get('/api/search', (req, res) => {
     request.getAsync(searchUrl.replace('{KEY}', encodeURIComponent(key)))
         .then((r) => {
             const body = JSON.parse(r.body);
-            return body.items.sort((a, b) => a.link > b.link);
+            return (body.items || []).sort((a, b) => a.link > b.link);
         })
         .then(items => res.end(JSON.stringify({items})));
 });
