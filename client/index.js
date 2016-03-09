@@ -46,7 +46,7 @@ window.onload = () => {
             return;
         }
 
-        if (document.body.scrollHeight === document.body.scrollTop + window.innerHeight) {
+        if (document.body.scrollHeight === Math.ceil(document.body.scrollTop + window.innerHeight)) {
             const key = input.value;
             if (key) {
                 isLoadingMore = true;
