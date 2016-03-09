@@ -33,7 +33,7 @@ function search(key, append, done) {
         }
 
         renderResult(images);
-        done(newImages.length);
+        done && done(newImages.length);
     });
 }
 
