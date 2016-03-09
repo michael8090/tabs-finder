@@ -9,15 +9,16 @@ const express = require('express'),
 const port = argv.port;
 const ROOT = __dirname;
 
-const searchUrl = 'https://www.googleapis.com/customsearch/v1?key=AIzaSyDheaXmeP-MaW5buX-nxSbsYunQ1U9D6mc&cx=001868711167737196319:ma5f00vvfku&q={KEY}&searchType=image';
+const searchUrl = 'https://www.googleapis.com/customsearch/v1?key=AIzaSyDheaXmeP-MaW5buX-nxSbsYunQ1U9D6mc&cx=001868711167737196319:ma5f00vvfku&searchType=image&q={KEY}&startIndex={INDEX}';
 
 const app = express();
 
 app.use(express.static(ROOT + '/client'));
 
 app.get('/api/search', (req, res) => {
-    const key = req.query.key;
-    request.getAsync(searchUrl.replace('{KEY}', encodeURIComponent(key)))
+    const {key, index} = req.query;
+    index = index || 0;
+    request.getAsync(searchUrl.replace('{KEY}', encodeURIComponent(key)).replace('{INDEX}', index))
         .then((r) => {
             const body = JSON.parse(r.body);
             return (body.items || []).sort((a, b) => a.link > b.link);
