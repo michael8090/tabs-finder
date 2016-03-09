@@ -16,8 +16,8 @@ const app = express();
 app.use(express.static(ROOT + '/client'));
 
 app.get('/api/search', (req, res) => {
-    const {key, index} = req.query;
-    index = index || 0;
+    const key = req.query.key;
+    const index = req.query.index || 0;
     request.getAsync(searchUrl.replace('{KEY}', encodeURIComponent(key)).replace('{INDEX}', index))
         .then((r) => {
             const body = JSON.parse(r.body);
